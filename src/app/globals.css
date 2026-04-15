@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+}
+
+.prose a { color: #00b0f0; }
+.prose a:hover { text-decoration: underline; }
+.prose h1, .prose h2, .prose h3 { font-weight: 800; letter-spacing: -0.02em; }
