@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import LeadForm from '@/components/LeadForm';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getPb, type Article, type Category, type InternalLink, pbFileUrl } from '@/lib/pb';
@@ -94,6 +95,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ catego
         publisher: { '@type': 'Organization', name: 'Kuiper Safety Systems' },
         mainEntityOfPage: { '@type': 'WebPage', '@id': `https://blog.kuiper-safety.de/${category}/${a.slug}` },
       }) }} />
+
+      <div className="mt-12"><LeadForm articleId={a.id} articleSlug={a.slug} /></div>
 
       {related.length > 0 && (
         <section className="mt-16 pt-10 border-t">

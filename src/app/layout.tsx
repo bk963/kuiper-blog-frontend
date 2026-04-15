@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import './globals.css';
+import Tracking from '@/components/Tracking';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,6 +23,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="de">
       <body className={inter.className}>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Organization',
+          name: 'Kuiper Safety Systems',
+          url: 'https://kuiper-safety.de',
+          logo: 'https://blog.kuiper-safety.de/favicon.svg',
+          sameAs: ['https://www.linkedin.com/company/kuiper-safety-systems']
+        }) }} />
+
+        <Tracking />
         <header className="border-b bg-white sticky top-0 z-20">
           <div className="container mx-auto px-4 py-4 flex items-center justify-between">
             <Link href="/" className="font-extrabold text-xl tracking-tight">
