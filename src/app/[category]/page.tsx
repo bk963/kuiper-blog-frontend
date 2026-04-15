@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   return {
     title: cat.meta_title || cat.name,
     description: cat.description || undefined,
+    robots: { index: false, follow: true },
     alternates: { canonical: `https://blog.kuiper-safety.de/${cat.slug}` },
   };
 }

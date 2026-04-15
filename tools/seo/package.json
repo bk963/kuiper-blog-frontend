@@ -2,5 +2,7 @@
   "name": "kuiper-seo-tools",
   "type": "module",
   "private": true,
-  "dependencies": { "pocketbase": "^0.22.0" }
+  "dependencies": {
+    "pocketbase": "^0.22.1"
+  }
 }

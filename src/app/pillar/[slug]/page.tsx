@@ -33,6 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return {
     title: p.meta_title || p.title,
     description: p.meta_description,
+    robots: { index: false, follow: true },
     alternates: { canonical: `https://blog.kuiper-safety.de/pillar/${p.slug}` },
   };
 }

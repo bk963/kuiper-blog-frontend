@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     siteName: 'Kuiper Safety Blog',
     url: 'https://blog.kuiper-safety.de',
   },
-  robots: { index: true, follow: true },
+  robots: { index: false, follow: true, googleBot: { index: false, follow: true } },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
