@@ -26,6 +26,8 @@ export type Article = {
   focus_keyword?: string;
   hero_image?: string;
   reading_time_min?: number;
+  hero_image_url?: string;
+  original_url?: string;
   word_count?: number;
   status: 'draft' | 'review' | 'published' | 'archived';
   published_at?: string;
@@ -60,8 +62,23 @@ export type PillarPage = {
   content?: string;
   meta_title?: string;
   meta_description?: string;
+  focus_keyword?: string;
   hero_image?: string;
+  status?: string;
+  published_at?: string;
   collectionId: string;
+};
+
+export type InternalLink = {
+  id: string;
+  source_article_id: string;
+  target_article_id: string;
+  anchor_text?: string;
+  position?: string;
+  automatic?: boolean;
+  expand?: {
+    target_article_id?: Article;
+  };
 };
 
 export function pbFileUrl(record: { id: string; collectionId: string }, file?: string) {

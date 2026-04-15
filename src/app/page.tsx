@@ -35,13 +35,13 @@ export default async function HomePage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map(a => {
-            const img = pbFileUrl(a, a.hero_image);
+            const img = a.hero_image_url || pbFileUrl(a, a.hero_image);
             return (
               <Link key={a.id} href={`/${a.expand?.category_id?.slug || 'blog'}/${a.slug}`} className="group block">
                 <article className="rounded-xl overflow-hidden border hover:shadow-lg transition-shadow h-full flex flex-col">
                   {img ? (
                     <div className="aspect-[16/9] relative bg-slate-100">
-                      <Image src={img} alt={a.title} fill className="object-cover group-hover:scale-105 transition-transform" sizes="(max-width: 768px) 100vw, 33vw" />
+                      <Image src={img} alt={a.title} fill className="object-cover group-hover:scale-105 transition-transform" sizes="(max-width: 768px) 100vw, 33vw" unoptimized />
                     </div>
                   ) : (
                     <div className="aspect-[16/9] bg-gradient-to-br from-brand/10 to-brand/20" />

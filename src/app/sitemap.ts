@@ -13,6 +13,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const c of cats) entries.push({ url: `${base}/${c.slug}`, changeFrequency: 'weekly', priority: 0.8 });
   } catch {}
   try {
+    const pillars = await pb.collection('blog_pillar_pages').getFullList<{slug:string,updated:string}>({ filter: 'status = "published"', $autoCancel: false });
+    for (const p of pillars) entries.push({ url: `${base}/pillar/${p.slug}`, lastModified: new Date(p.updated), changeFrequency: 'weekly', priority: 0.9 });
+  } catch {}
+  try {
     const arts = await pb.collection('blog_articles').getFullList<Article>({ filter: 'status = "published"', expand: 'category_id', $autoCancel: false });
     for (const a of arts) {
       const catSlug = (a as any).expand?.category_id?.slug || 'blog';

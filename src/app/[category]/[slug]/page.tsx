@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getPb, type Article, type Category, pbFileUrl } from '@/lib/pb';
+import { getPb, type Article, type Category, type InternalLink, pbFileUrl } from '@/lib/pb';
 import type { Metadata } from 'next';
 
 export const revalidate = 60;
@@ -12,6 +12,17 @@ async function getArticle(slug: string): Promise<Article | null> {
   try {
     return await pb.collection('blog_articles').getFirstListItem<Article>(`slug = "${slug}" && status = "published"`, { expand: 'category_id,pillar_id' });
   } catch { return null; }
+}
+
+async function getRelatedArticles(articleId: string): Promise<Article[]> {
+  const pb = getPb();
+  try {
+    const links = await pb.collection('blog_internal_links').getList<InternalLink>(1, 5, {
+      filter: `source_article_id = "${articleId}"`,
+      expand: 'target_article_id',
+    });
+    return links.items.map(l => l.expand?.target_article_id).filter(Boolean) as Article[];
+  } catch { return []; }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ category: string; slug: string }> }): Promise<Metadata> {
@@ -36,7 +47,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ catego
   const { category, slug } = await params;
   const a = await getArticle(slug);
   if (!a) notFound();
-  const img = pbFileUrl(a, a.hero_image);
+  const related = await getRelatedArticles(a.id);
+  const img = a.hero_image_url || pbFileUrl(a, a.hero_image);
   const cat = a.expand?.category_id;
 
   return (
@@ -50,7 +62,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ catego
       </div>
       {img && (
         <div className="relative aspect-[16/9] mb-8 rounded-xl overflow-hidden">
-          <Image src={img} alt={a.title} fill className="object-cover" priority sizes="(max-width: 768px) 100vw, 768px" />
+          <Image src={img} alt={a.title} fill className="object-cover" priority sizes="(max-width: 768px) 100vw, 768px" unoptimized />
         </div>
       )}
       <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: a.content }} />
@@ -66,6 +78,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ catego
         publisher: { '@type': 'Organization', name: 'Kuiper Safety Systems' },
         mainEntityOfPage: { '@type': 'WebPage', '@id': `https://blog.kuiper-safety.de/${category}/${a.slug}` },
       }) }} />
+
+      {related.length > 0 && (
+        <section className="mt-16 pt-10 border-t">
+          <h2 className="text-2xl font-bold mb-6">Das könnte dich auch interessieren</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {related.map(r => (
+              <Link key={r.id} href={`/${(r as any).expand?.category_id?.slug || 'brandschutz'}/${r.slug}`} className="group block p-4 rounded-xl border hover:shadow transition-shadow">
+                <h3 className="font-bold text-base mb-1 group-hover:text-brand">{r.title}</h3>
+                {r.excerpt && <p className="text-sm text-slate-600 line-clamp-2">{r.excerpt}</p>}
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </article>
   );
 }
