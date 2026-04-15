@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { getPb, type Article, type Category, pbFileUrl } from '@/lib/pb';
 import type { Metadata } from 'next';
 
-export const revalidate = 300;
+export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 async function getArticle(slug: string): Promise<Article | null> {
   const pb = getPb();

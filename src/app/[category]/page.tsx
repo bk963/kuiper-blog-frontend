@@ -4,7 +4,8 @@ import { getPb, type Article, type Category, type PillarPage, pbFileUrl } from '
 import Image from 'next/image';
 import type { Metadata } from 'next';
 
-export const revalidate = 300;
+export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 
 async function getCategory(slug: string): Promise<Category | null> {
   const pb = getPb();
