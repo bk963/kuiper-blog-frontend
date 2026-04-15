@@ -17,11 +17,27 @@ async function getArticle(slug: string): Promise<Article | null> {
 async function getRelatedArticles(articleId: string): Promise<Article[]> {
   const pb = getPb();
   try {
-    const links = await pb.collection('blog_internal_links').getList<InternalLink>(1, 5, {
+    // Direction 1: articles THIS mentions (outbound)
+    const outbound = await pb.collection('blog_internal_links').getList<InternalLink>(1, 5, {
       filter: `source_article_id = "${articleId}"`,
       expand: 'target_article_id',
     });
-    return links.items.map(l => l.expand?.target_article_id).filter(Boolean) as Article[];
+    const outArt = outbound.items.map(l => l.expand?.target_article_id).filter(Boolean) as Article[];
+    if (outArt.length >= 3) return outArt.slice(0, 5);
+    // Fallback: articles that mention THIS (inbound)
+    const inbound = await pb.collection('blog_internal_links').getList<any>(1, 10, {
+      filter: `target_article_id = "${articleId}"`,
+      expand: 'source_article_id',
+    });
+    const inArt = inbound.items.map(l => l.expand?.source_article_id).filter(Boolean) as Article[];
+    // Merge, dedupe by id, max 5
+    const merged: Article[] = [];
+    const seen = new Set<string>();
+    for (const a of [...outArt, ...inArt]) {
+      if (a && !seen.has(a.id)) { seen.add(a.id); merged.push(a); }
+      if (merged.length >= 5) break;
+    }
+    return merged;
   } catch { return []; }
 }
 
