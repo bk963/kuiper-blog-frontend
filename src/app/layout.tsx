@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     url: 'https://blog.kuiper-safety.de',
   },
   robots: { index: false, follow: true, googleBot: { index: false, follow: true } },
+  icons: { icon: '/favicon-32.png' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -28,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           '@type': 'Organization',
           name: 'Kuiper Safety Systems',
           url: 'https://kuiper-safety.de',
-          logo: 'https://blog.kuiper-safety.de/favicon.svg',
+          logo: 'https://blog.kuiper-safety.de/brand/kuiper-logo.png',
           sameAs: ['https://www.linkedin.com/company/kuiper-safety-systems']
         }) }} />
 
