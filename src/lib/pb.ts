@@ -29,6 +29,8 @@ export type Article = {
   hero_image_url?: string;
   original_url?: string;
   word_count?: number;
+  secondary_keywords?: string[];
+  faqs?: Array<{ q: string; a: string }>;
   status: 'draft' | 'review' | 'published' | 'archived';
   published_at?: string;
   created: string;

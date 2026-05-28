@@ -1,9 +1,35 @@
 import { notFound } from 'next/navigation';
 import LeadForm from '@/components/LeadForm';
+import PdfLeadMagnet from '@/components/PdfLeadMagnet';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getPb, type Article, type Category, type InternalLink, pbFileUrl } from '@/lib/pb';
 import type { Metadata } from 'next';
+
+/**
+ * PDF-Lead-Magnet-Mapping pro Artikel-Slug.
+ * Email-Gate vor Download – Migrierte SEO-PDFs von brandschutzdozenten.de.
+ */
+const PDF_LEAD_MAGNETS: Record<string, { title: string; description: string; file: string; bullets: string[] }> = {
+  'brandklassen-a-b-c-d-f-din-en-2': {
+    title: 'Brandklassen-Tabelle (PDF)',
+    description: 'Übersicht aller Brandklassen A-F nach DIN EN 2 mit Beispielen, Brennstoffen und passenden Feuerlöschern – zum Aushängen im Betrieb.',
+    file: '/downloads/brandklassen-tabelle.pdf',
+    bullets: ['Alle 5 Brandklassen kompakt erklärt', 'Mit Brennstoff-Beispielen pro Klasse', 'Empfohlene Löschmittel-Symbole', 'Druckfertig DIN A4'],
+  },
+  'ausbildung-zum-brandschutzhelfer': {
+    title: 'Bestellung Brandschutzhelfer (Word-Vorlage)',
+    description: 'Rechtssichere Bestellurkunde für Brandschutzhelfer nach ASR A2.2 – ausfüllen, ausdrucken, unterschreiben.',
+    file: '/downloads/brandschutzhelfer-bestellung-vorlage.pdf',
+    bullets: ['Nach ASR A2.2 + DGUV-konform', 'Sofort ausfüllbar', 'Mit Aufgaben-Übersicht für die Person', 'Rechtssicher dokumentiert'],
+  },
+  'brandschutzbeauftragter-fortbildung-externer': {
+    title: 'Bestellung Brandschutzbeauftragter (Word-Vorlage)',
+    description: 'Bestellurkunde für interne oder externe Brandschutzbeauftragte nach DGUV Information 205-003 – sofort einsetzbar.',
+    file: '/downloads/brandschutzbeauftragter-bestellung-bsb.pdf',
+    bullets: ['Nach DGUV-Info 205-003', 'Aufgabenkatalog enthalten', 'Für intern + extern verwendbar', 'Word + PDF kompatibel'],
+  },
+};
 
 export const revalidate = 60;
 export const dynamic = 'force-dynamic';
@@ -84,6 +110,19 @@ export default async function ArticlePage({ params }: { params: Promise<{ catego
         </div>
       )}
       <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: a.content }} />
+
+      {/* PDF-Lead-Magnet (nur wenn für diesen Slug konfiguriert) */}
+      {PDF_LEAD_MAGNETS[a.slug] && (
+        <PdfLeadMagnet
+          articleId={a.id}
+          articleSlug={a.slug}
+          pdfTitle={PDF_LEAD_MAGNETS[a.slug].title}
+          pdfDescription={PDF_LEAD_MAGNETS[a.slug].description}
+          pdfFile={PDF_LEAD_MAGNETS[a.slug].file}
+          bullets={PDF_LEAD_MAGNETS[a.slug].bullets}
+        />
+      )}
+
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'Article',
@@ -96,6 +135,35 @@ export default async function ArticlePage({ params }: { params: Promise<{ catego
         publisher: { '@type': 'Organization', name: 'Kuiper Safety Systems' },
         mainEntityOfPage: { '@type': 'WebPage', '@id': `https://blog.kuiper-safety.de/${category}/${a.slug}` },
       }) }} />
+
+      {/* FAQ-Section + FAQPage-Schema (Featured-Snippet Chance bei "Was ist X?"-Queries) */}
+      {a.faqs && Array.isArray(a.faqs) && a.faqs.length > 0 && (
+        <>
+          <section className="mt-12 pt-10 border-t" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" className="text-2xl font-bold mb-6">Häufige Fragen</h2>
+            <div className="space-y-3">
+              {a.faqs.map((f, i) => (
+                <details key={i} className="group rounded-lg border bg-slate-50 px-4 py-3 open:bg-white open:shadow-sm">
+                  <summary className="cursor-pointer font-semibold text-slate-900 list-none flex items-start gap-2">
+                    <span className="text-brand mt-0.5">▸</span>
+                    <span className="flex-1">{f.q}</span>
+                  </summary>
+                  <div className="mt-3 pl-6 text-slate-700 leading-relaxed">{f.a}</div>
+                </details>
+              ))}
+            </div>
+          </section>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: a.faqs.map(f => ({
+              '@type': 'Question',
+              name: f.q,
+              acceptedAnswer: { '@type': 'Answer', text: f.a },
+            })),
+          }) }} />
+        </>
+      )}
 
       <div className="mt-12"><LeadForm articleId={a.id} articleSlug={a.slug} /></div>
 
