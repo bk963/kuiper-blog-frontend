@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   return {
     title: a.meta_title || a.title,
     description: a.meta_description || a.excerpt,
-    robots: { index: false, follow: true },
+    robots: { index: true, follow: true },
     alternates: { canonical: `https://blog.kuiper-safety.de/${category}/${a.slug}` },
     openGraph: {
       title: a.meta_title || a.title,
