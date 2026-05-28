@@ -1,0 +1,34 @@
+{
+  "id": "wp0000000013554",
+  "slug": "photovoltaikanlagen-und-brandschutz",
+  "title": "Photovoltaikanlagen und Brandschutz: Risiken, Vorschriften & sichere Lösungen für Unternehmen",
+  "meta_title": "Photovoltaik & Brandschutz: PV-Anlage, Risiken + Vorgaben",
+  "meta_description": "Brandschutz bei Photovoltaik – Risiken durch DC-Leitungen, Modul-Brände, Feuerwehr-Vorgaben, Schalter, Kennzeichnung. Praxis-Tipps für Betreiber.",
+  "focus_keyword": "photovoltaik brandschutz",
+  "secondary_keywords": [
+    "pv anlage brandschutz",
+    "photovoltaik brand",
+    "feuerwehr photovoltaik",
+    "dc trenner pv",
+    "brandschutz solaranlage"
+  ],
+  "faqs": [
+    {
+      "a": "Statistisch gering, aber spezifisch erhöht bei fehlerhafter Installation: Lichtbögen in DC-Leitungen, Wechselrichter-Defekte, mangelhafte Steckverbindungen, Schmutz/Verschattung.",
+      "q": "Wie hoch ist das Brandrisiko bei PV-Anlagen?"
+    },
+    {
+      "a": "VDE-AR-E 2100-712 für DC-Trenner, DIN VDE 0100-712 für Installation, MLAR/LBauO für Leitungsverlegung. Außerdem: Hinweisschilder „Photovoltaik“ an Hauseingang + Verteilerkasten.",
+      "q": "Welche Vorgaben gelten?"
+    },
+    {
+      "a": "Empfohlen: ein Notschalter zum DC-seitigen Freischalten („Feuerwehrschalter“). In manchen Bundesländern Pflicht. Position nahe Hauseingang ist Best Practice.",
+      "q": "Müssen DC-Schalter installiert werden?"
+    },
+    {
+      "a": "Ja – moderne Feuerwehren sind geschult. DC-seitig keine vollständige Abschaltung möglich (Modulspannung bleibt unter Licht), deshalb Sicherheitsabstände + Wasserstrahl-Sprühnebel.",
+      "q": "Kann die Feuerwehr ein PV-Haus löschen?"
+    }
+  ],
+  "updated": "2026-05-28 21:46:56.036Z"
+}

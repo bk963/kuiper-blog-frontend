@@ -1,0 +1,34 @@
+{
+  "id": "wp0000000011228",
+  "slug": "lagern-von-gefahrstoffen-brandschutz",
+  "title": "Lagern von Gefahrstoffen, was ist im Brandschutz zu beachten",
+  "meta_title": "Gefahrstoffe lagern: Brandschutz + TRGS 510 in der Praxis",
+  "meta_description": "Gefahrstoffe lagern – Brandschutz-Vorgaben nach TRGS 510, Mengen + Zusammenlagerverbote, Auffangwannen, Lüftung + häufige Fehler.",
+  "focus_keyword": "gefahrstoffe lagern brandschutz",
+  "secondary_keywords": [
+    "trgs 510",
+    "gefahrstofflagerung",
+    "brandschutz lager",
+    "brennbare flüssigkeiten lagern",
+    "lagerklassen"
+  ],
+  "faqs": [
+    {
+      "a": "Die Technische Regel für Gefahrstoffe 510 regelt die Lagerung von Gefahrstoffen in ortsbeweglichen Behältern: Mengen-Schwellen, Zusammenlagerverbote, Anforderungen an Lagerräume.",
+      "q": "Was regelt die TRGS 510?"
+    },
+    {
+      "a": "12 Lagerklassen (LGK 1 bis LGK 13, mit Sonderfällen). Brennbare Flüssigkeiten: LGK 3 (entzündbar) und LGK 6.1 (giftig+brennbar). Zusammenlagerung nur eingeschränkt zulässig.",
+      "q": "Welche Lagerklassen gibt es?"
+    },
+    {
+      "a": "Ab bestimmten Lagermengen pro Lagerklasse (TRGS 510 Anlage 1). Unter den Schwellen reichen Schränke, darüber Lagerräume mit definiertem Brandwiderstand + Lüftung.",
+      "q": "Wann brauche ich ein Gefahrstofflager?"
+    },
+    {
+      "a": "Brandabschnittsbildung (F30 oder F90), elektrische Anlagen ggf. Ex-Schutz, Lüftung min. 5-facher Luftwechsel, Auffangwannen, Erdung, Blitzschutz.",
+      "q": "Welche Brandschutz-Anforderungen gelten?"
+    }
+  ],
+  "updated": "2026-05-28 21:46:57.778Z"
+}

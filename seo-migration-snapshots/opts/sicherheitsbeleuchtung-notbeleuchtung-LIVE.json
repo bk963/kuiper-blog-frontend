@@ -1,0 +1,34 @@
+{
+  "id": "wp0000000013552",
+  "slug": "sicherheitsbeleuchtung-notbeleuchtung",
+  "title": "Sicherheitsbeleuchtung und Notbeleuchtung im Unternehmen – Anforderungen aus brandschutzfachlicher Sicht",
+  "meta_title": "Sicherheitsbeleuchtung & Notbeleuchtung: DIN, Wartung + Pflichten",
+  "meta_description": "Sicherheitsbeleuchtung + Notbeleuchtung – DIN EN 1838, Wartungsintervalle, Pflichten Arbeitgeber. Anforderungen für Fluchtwege + Sammelstellen.",
+  "focus_keyword": "sicherheitsbeleuchtung",
+  "secondary_keywords": [
+    "notbeleuchtung",
+    "sicherheitsbeleuchtung din",
+    "din en 1838",
+    "notbeleuchtung wartung",
+    "sicherheitsbeleuchtung prüfung"
+  ],
+  "faqs": [
+    {
+      "a": "Beleuchtung, die bei Stromausfall automatisch + ohne Verzögerung anspringt + Fluchtwege, Sammelstellen + Sicherheitseinrichtungen ausleuchtet. Geregelt in DIN EN 1838.",
+      "q": "Was ist Sicherheitsbeleuchtung?"
+    },
+    {
+      "a": "Funktionsprüfung wöchentlich (Anlauf), monatlich (Dauerbetrieb-Test 1h), jährlich Vollbetrieb mit Nachweis der Mindestbetriebsdauer.",
+      "q": "Welche Pflichten hat der Betreiber?"
+    },
+    {
+      "a": "Mindestens 1 Stunde bei Stromausfall (für Sonderbauten oft 3 Stunden). Mindesthelligkeit auf Fluchtwegen 1 Lux an der Mittellinie.",
+      "q": "Wie lange muss sie brennen?"
+    },
+    {
+      "a": "In allen Arbeitsstätten + Sonderbauten, in denen bei Ausfall der Allgemeinbeleuchtung Gefahr für Personen entstehen kann (ergibt sich aus Gefährdungsbeurteilung + LBauO).",
+      "q": "Wann ist sie Pflicht?"
+    }
+  ],
+  "updated": "2026-05-28 21:46:58.214Z"
+}
