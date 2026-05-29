@@ -6,9 +6,24 @@ const PB_URL = (typeof window === 'undefined'
   ? process.env.PB_INTERNAL_URL
   : process.env.NEXT_PUBLIC_PB_URL) || 'https://pb.kuiper-safety.de';
 
+/**
+ * pb.kuiper-safety.de ist hinter Cloudflare Access. Server-Side fetches brauchen
+ * den Service-Token via Headers, sonst antwortet CF mit 302/HTML (= JSON.parse-Crash).
+ * Browser-Calls greifen NICHT, weil dort PB_CF_ACCESS_* nicht definiert ist (private env).
+ */
 export function getPb() {
   const pb = new PocketBase(PB_URL);
   pb.autoCancellation(false);
+  if (typeof window === 'undefined' && process.env.PB_CF_ACCESS_CLIENT_ID && process.env.PB_CF_ACCESS_CLIENT_SECRET) {
+    pb.beforeSend = (url, options) => {
+      options.headers = {
+        ...(options.headers || {}),
+        'CF-Access-Client-Id': process.env.PB_CF_ACCESS_CLIENT_ID!,
+        'CF-Access-Client-Secret': process.env.PB_CF_ACCESS_CLIENT_SECRET!,
+      };
+      return { url, options };
+    };
+  }
   return pb;
 }
 
