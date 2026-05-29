@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/lib/admin-auth';
+import { requireAdmin, pbHeaders } from '@/lib/admin-auth';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -17,7 +17,7 @@ async function fetchArticles(token: string): Promise<ListArticle[]> {
   const pbUrl = process.env.PB_INTERNAL_URL || process.env.NEXT_PUBLIC_PB_URL || 'https://pb.kuiper-safety.de';
   const url = `${pbUrl}/api/collections/blog_articles/records?perPage=200&sort=-updated&fields=id,slug,title,status,meta_title,updated,seo_score`;
   const res = await fetch(url, {
-    headers: { Authorization: token },
+    headers: pbHeaders({ Authorization: token }),
     cache: 'no-store',
   });
   if (!res.ok) return [];

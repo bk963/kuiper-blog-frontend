@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/lib/admin-auth';
+import { requireAdmin, pbHeaders } from '@/lib/admin-auth';
 import { notFound } from 'next/navigation';
 import EditorClient from './EditorClient';
 
@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 async function getArticle(id: string, token: string) {
   const pbUrl = process.env.PB_INTERNAL_URL || process.env.NEXT_PUBLIC_PB_URL || 'https://pb.kuiper-safety.de';
   const res = await fetch(`${pbUrl}/api/collections/blog_articles/records/${id}`, {
-    headers: { Authorization: token },
+    headers: pbHeaders({ Authorization: token }),
     cache: 'no-store',
   });
   if (!res.ok) return null;

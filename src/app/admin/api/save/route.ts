@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAdminSession } from '@/lib/admin-auth';
+import { getAdminSession, pbHeaders } from '@/lib/admin-auth';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
   const res = await fetch(`${pbUrl}/api/collections/blog_articles/records/${id}`, {
     method: 'PATCH',
-    headers: { 'Content-Type': 'application/json', Authorization: s.pbToken },
+    headers: pbHeaders({ Authorization: s.pbToken }),
     body: JSON.stringify(body),
   });
   if (!res.ok) {
