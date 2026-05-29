@@ -2,9 +2,11 @@ import type { Metadata } from 'next';
 import { Figtree, DM_Sans } from 'next/font/google';
 import Link from 'next/link';
 import Image from 'next/image';
+import Script from 'next/script';
 import { headers } from 'next/headers';
 import './globals.css';
-import Tracking from '@/components/Tracking';
+import CookieBanner from '@/components/CookieBanner';
+import TrackingClarity from '@/components/TrackingClarity';
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-figtree', display: 'swap' });
 const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-dm-sans', display: 'swap' });
@@ -53,7 +55,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
 
-        <Tracking />
+        {/* === Kuiper Tracking-Stack (1:1 wie www.kuiper-safety.de) ===
+            Reihenfolge wichtig:
+            1) Consent-Manager — definiert window.kuiperConsent vor allem anderen
+            2) GA4 — Consent-Mode v2 default-denied, granted bei Statistik-Opt-in
+            3) Tracking — Click-IDs, UTMs, Frontend-Events (page_view, scroll, dwell, rage, vitals)
+            4) Clarity-Loader — wartet auf 'statistik'-Consent
+        */}
+        <Script src="/scripts/kuiper-consent.v1.js" strategy="beforeInteractive" />
+        <Script src="/scripts/kuiper-ga4.v1.js" strategy="afterInteractive" />
+        <Script src="/scripts/kuiper-tracking.v1.js" strategy="afterInteractive" />
+        <TrackingClarity />
 
         {/* Header: Navy-Hintergrund + Logo + Nav */}
         <header className="bg-navy text-white sticky top-0 z-30 border-b border-white/10">
@@ -118,6 +130,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   <li><Link href="https://www.kuiper-safety.de" className="hover:text-brand">Hauptseite</Link></li>
                   <li><Link href="https://www.kuiper-safety.de/impressum" className="hover:text-brand">Impressum</Link></li>
                   <li><Link href="https://www.kuiper-safety.de/datenschutz" className="hover:text-brand">Datenschutz</Link></li>
+                  <li>
+                    <a href="#" data-kuiper-cookie-settings className="hover:text-brand cursor-pointer">Cookie-Einstellungen</a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -130,6 +145,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </div>
           </div>
         </footer>
+
+        {/* CMP-Banner — wird per consent.v1.js Logic angezeigt */}
+        <CookieBanner />
       </body>
     </html>
   );
