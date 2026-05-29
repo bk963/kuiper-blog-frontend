@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Figtree, DM_Sans } from 'next/font/google';
 import Link from 'next/link';
 import Image from 'next/image';
+import { headers } from 'next/headers';
 import './globals.css';
 import Tracking from '@/components/Tracking';
 
@@ -22,7 +23,19 @@ export const metadata: Metadata = {
   icons: { icon: '/favicon.ico' },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Admin hat eigenes Layout (Sidebar) — Public-Header/Footer hier weglassen
+  const pathname = (await headers()).get('x-pathname') || '';
+  const isAdmin = pathname.startsWith('/admin');
+
+  if (isAdmin) {
+    return (
+      <html lang="de" className={`${figtree.variable} ${dmSans.variable}`}>
+        <body className="font-sans bg-white text-ink antialiased">{children}</body>
+      </html>
+    );
+  }
+
   return (
     <html lang="de" className={`${figtree.variable} ${dmSans.variable}`}>
       <body className="font-sans bg-white text-ink antialiased">

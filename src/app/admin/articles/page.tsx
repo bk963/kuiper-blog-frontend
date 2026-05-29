@@ -13,22 +13,29 @@ type ListArticle = {
   seo_score?: number;
 };
 
-async function fetchArticles(token: string): Promise<ListArticle[]> {
+async function fetchArticles(token: string): Promise<{ items: ListArticle[]; error?: string }> {
   const pbUrl = process.env.PB_INTERNAL_URL || process.env.NEXT_PUBLIC_PB_URL || 'https://pb.kuiper-safety.de';
-  const url = `${pbUrl}/api/collections/blog_articles/records?perPage=200&sort=-updated&fields=id,slug,title,status,meta_title,updated,seo_score`;
-  const res = await fetch(url, {
-    headers: pbHeaders({ Authorization: token }),
-    cache: 'no-store',
-  });
-  if (!res.ok) return [];
-  const data = await res.json();
-  return data.items || [];
+  const url = `${pbUrl}/api/collections/blog_articles/records?perPage=200&sort=-updated`;
+  try {
+    const res = await fetch(url, {
+      headers: pbHeaders({ Authorization: token }),
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      const txt = await res.text();
+      return { items: [], error: `HTTP ${res.status}: ${txt.slice(0, 200)}` };
+    }
+    const data = await res.json();
+    return { items: data.items || [] };
+  } catch (e: any) {
+    return { items: [], error: e?.message || 'Fetch-Fehler' };
+  }
 }
 
 export default async function ArticlesPage({ searchParams }: { searchParams: Promise<{ q?: string; status?: string }> }) {
   const s = await requireAdmin();
   const sp = await searchParams;
-  const articles = await fetchArticles(s.pbToken);
+  const { items: articles, error } = await fetchArticles(s.pbToken);
   const filtered = articles.filter(a => {
     if (sp.q && !((a.title || '').toLowerCase().includes(sp.q.toLowerCase()) || (a.slug || '').includes(sp.q.toLowerCase()))) return false;
     if (sp.status && a.status !== sp.status) return false;
@@ -41,6 +48,13 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
         <h1 className="text-3xl font-extrabold">Artikel</h1>
         <span className="text-sm text-slate-500">{filtered.length} / {articles.length}</span>
       </div>
+
+      {error && (
+        <div className="mb-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-800 text-sm">
+          <div className="font-bold mb-1">Fehler beim Laden:</div>
+          <code className="text-xs">{error}</code>
+        </div>
+      )}
 
       <form action="/admin/articles" method="GET" className="mb-6 flex gap-2">
         <input

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
+import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
   title: 'Admin · Kuiper Safety Blog',
@@ -10,22 +12,33 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = (await headers()).get('x-pathname') || '';
+  // Login-Page hat eigenes Vollbild-Layout — kein Sidebar
+  if (pathname === '/admin/login') return <>{children}</>;
+
   return (
     <div className="min-h-screen flex bg-slate-50">
-      <aside className="w-56 bg-slate-900 text-slate-100 p-5 flex flex-col">
-        <div className="font-extrabold text-lg mb-6">KS Admin</div>
+      <aside className="w-60 bg-navy text-white p-5 flex flex-col">
+        <Link href="/admin" className="flex items-center gap-2 mb-8 hover:opacity-80">
+          <Image src="/brand/kss-k-cyan.svg" alt="KS" width={28} height={28} />
+          <span className="font-bold text-sm uppercase tracking-wider text-brand">Admin</span>
+        </Link>
         <nav className="space-y-1 text-sm">
-          <Link href="/admin" className="block px-3 py-2 rounded hover:bg-slate-800">Dashboard</Link>
-          <Link href="/admin/articles" className="block px-3 py-2 rounded hover:bg-slate-800">Artikel</Link>
-          <Link href="/admin/leads" className="block px-3 py-2 rounded hover:bg-slate-800 opacity-50">Leads (bald)</Link>
-          <Link href="/admin/seo" className="block px-3 py-2 rounded hover:bg-slate-800 opacity-50">SEO-Monitor (bald)</Link>
+          <Link href="/admin" className="block px-3 py-2 rounded hover:bg-white/10 transition">📊 Dashboard</Link>
+          <Link href="/admin/articles" className="block px-3 py-2 rounded hover:bg-white/10 transition">📝 Artikel</Link>
+          <Link href="/admin/leads" className="block px-3 py-2 rounded hover:bg-white/10 transition">👥 Leads</Link>
+          <Link href="/admin/seo" className="block px-3 py-2 rounded hover:bg-white/10 transition">📈 SEO-Monitor</Link>
+          <Link href="/admin/ai" className="block px-3 py-2 rounded hover:bg-white/10 transition">🤖 AI-Assistent</Link>
         </nav>
-        <form action="/admin/api/auth/logout" method="POST" className="mt-auto pt-6">
-          <button type="submit" className="text-xs text-slate-400 hover:text-white">Abmelden</button>
-        </form>
+        <div className="mt-auto pt-6 space-y-2 text-xs text-white/60">
+          <a href="https://blog.kuiper-safety.de" target="_blank" className="block hover:text-brand">↗ Blog Live ansehen</a>
+          <form action="/admin/api/auth/logout" method="POST">
+            <button type="submit" className="hover:text-white">Abmelden</button>
+          </form>
+        </div>
       </aside>
-      <main className="flex-1 p-8 overflow-y-auto">{children}</main>
+      <main className="flex-1 p-6 sm:p-8 overflow-y-auto">{children}</main>
     </div>
   );
 }
