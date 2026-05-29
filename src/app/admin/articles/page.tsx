@@ -15,7 +15,7 @@ type ListArticle = {
 
 async function fetchArticles(token: string): Promise<{ items: ListArticle[]; error?: string }> {
   const pbUrl = process.env.PB_INTERNAL_URL || process.env.NEXT_PUBLIC_PB_URL || 'https://pb.kuiper-safety.de';
-  const url = `${pbUrl}/api/collections/blog_articles/records?perPage=300`;
+  const url = `${pbUrl}/api/collections/blog_articles/records?perPage=300&skipTotal=1`;
   try {
     const res = await fetch(url, {
       headers: pbHeaders({ Authorization: token }),
